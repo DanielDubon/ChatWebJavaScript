@@ -23,6 +23,7 @@
         inputcontainer.style.background = "purple";
         inputcontainer.style.flexBasis = "100px";
         inputcontainer.style.padding = "10px";
+        
 
         document.body.append(chatcontainer);
         document.body.append(inputcontainer);
@@ -55,8 +56,8 @@
     t.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)'; 
     t.style.resize = 'none'; 
     t.style.fontFamily = '"Segoe UI", sans-serif'; 
-    t.style.fontSize = '1rem'; // Tamaño de letra estándar
-
+    t.style.fontSize = '1rem'; 
+    t.setAttribute('maxlength', '140');
 
 
     inputcontainer.append(t);
@@ -114,12 +115,14 @@ const setTheme = (theme) => {
         localStorage.setItem("Theme", theme);
         chatcontainer.style.background = 'white';
         ul.style.color = "black";
+     
         inputcontainer.style.background = "purple";
         btn_drkmode.textContent = 'Toggle Dark Mode';
     } else {
         localStorage.setItem("Theme", theme);
         chatcontainer.style.background = 'black';
         ul.style.color = "white";
+      
         inputcontainer.style.background = "purple";
         btn_drkmode.textContent = 'Toggle Light Mode';
     }
