@@ -15,10 +15,14 @@
         chatcontainer.style.flexBasis = "0";
         chatcontainer.style.overflowY = "scroll";
         chatcontainer.style.overflowX = "hidden";
+      
         
-
+        inputcontainer.style.display = "flex";
+        inputcontainer.style.alignItems = "center";
+        inputcontainer.style.justifyContent =" space-between"
         inputcontainer.style.background = "purple";
         inputcontainer.style.flexBasis = "100px";
+        inputcontainer.style.padding = "10px";
 
         document.body.append(chatcontainer);
         document.body.append(inputcontainer);
@@ -34,16 +38,63 @@
 
 
     const ul = document.createElement('ul');
+    ul.style.listStyle = "none"
     chatcontainer.append(ul);
     const t = document.createElement('textarea');
+    t.style.flex = "1"; // Permite que el textarea crezca para llenar el espacio
+    t.style.marginRight = "10px"; // Añade un margen a la derecha
+    t.style.width = '90%'; 
+    t.style.height = '50px'; 
+    t.style.padding = '10px';
+    t.style.marginTop = '10px'; 
+    t.style.borderRadius = '20px'; 
+
+    
+    t.style.border = '1px solid #d1d3d4'; 
+    t.style.outline = 'none';
+    t.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)'; 
+    t.style.resize = 'none'; 
+    t.style.fontFamily = '"Segoe UI", sans-serif'; 
+    t.style.fontSize = '1rem'; // Tamaño de letra estándar
+
+
+
     inputcontainer.append(t);
     const b = document.createElement('button');
-    b.append('SEND');
+    b.textContent = 'Enviar';
+    b.style.margin = "0"; 
+    b.style.padding = '10px 20px';
+    b.style.flexShrink = "0"; 
+    b.style.borderRadius = '20px';
+    b.style.border = 'none';
+    b.style.backgroundColor = '#000'; 
+    b.style.color = 'white';
+    b.style.fontFamily = '"Segoe UI", sans-serif';
+    b.style.fontSize = '1rem';
+    b.style.cursor = 'pointer';
+    b.style.marginLeft = '15px';
+    b.style.marginTop = '10px';
+    
     inputcontainer.append(b);
 
 
     const btn_drkmode = document.createElement('button');
     btn_drkmode.textContent = 'Dark Mode';
+    btn_drkmode.style.flexShrink = "0";
+    btn_drkmode.style.margin = "0";
+    btn_drkmode.textContent = 'Enviar';
+    btn_drkmode.style.margin = "0"; 
+    btn_drkmode.style.padding = '10px 20px';
+    btn_drkmode.style.flexShrink = "0"; 
+    btn_drkmode.style.borderRadius = '20px';
+    btn_drkmode.style.border = 'none';
+    btn_drkmode.style.backgroundColor = '#000'; 
+    btn_drkmode.style.color = 'white';
+    btn_drkmode.style.fontFamily = '"Segoe UI", sans-serif';
+    btn_drkmode.style.fontSize = '1rem';
+    btn_drkmode.style.cursor = 'pointer';
+    btn_drkmode.style.marginLeft = '15px';
+    btn_drkmode.style.marginTop = '10px';
 inputcontainer.append(btn_drkmode, document.body.firstChild);
 
 
@@ -80,17 +131,48 @@ setTheme(theme);
 
     btn_drkmode.addEventListener('click', toggleDarkMode);
 
-    const getMessages = async () => {
-      const response = await fetch('https://chat.tiburoncin.lat/messages');
-      const messages = await response.json();
-       messages.reverse().forEach((message) => {
-        const li = document.createElement('li');
-        li.append(`${message.username}: ${message.message}`);
-        ul.append(li);
-        
-      });
-      chatcontainer.scrollTop = chatcontainer.scrollHeight;
-    };
+  const getMessages = async () => {
+  const response = await fetch('https://chat.tiburoncin.lat/messages');
+  const messages = await response.json();
+  messages.reverse().forEach((message) => {
+    const li = document.createElement('li');
+ 
+    if (message.message.match(/\.(jpeg|jpg|gif|png)$/) != null) {
+      const img = document.createElement('img');
+      img.src = message.message;
+      img.style.maxWidth = '200px'; 
+      img.style.borderRadius = '10px'; 
+      li.append(img);
+    } else {
+    li.style.maxWidth = '35%'; // Limitar el ancho máximo de los mensajes
+    li.style.wordWrap = 'break-word'; // Permite la ruptura de línea dentro de palabras largas
+    li.style.marginBottom = '10px'; // Espacio entre mensajes
+    li.style.padding = '10px'; // Relleno interno de los mensajes
+    li.style.borderRadius = '10px'; // Bordes redondeados de los mensajes
+    li.style.position = 'relative';
+if (message.username === 'Dubon') {
+  li.style.textAlign = "left"
+  li.style.backgroundColor = '#DCF8C6'; // Color de fondo de tus mensajes
+      li.style.marginLeft = 'auto'; // Alinea tus mensajes a la derecha
+      li.style.marginRight = '10px'; // Espacio a la derecha de tus mensajes
+    } else {
+      li.style.backgroundColor = '#FFFFFF'; // Color de fondo de los mensajes de otros
+      li.style.marginLeft = '10px'; 
+    }
+
+      li.style.background = `linear-gradient(to right, ${message.username === 'Dubon' ? '#ac40c9' : '#87165e'}, ${message.username === 'Dubon' ? '#e02d81' : '#9e1354'})`;
+                li.style.color = '#fff';
+                li.style.borderRadius = '5px';
+                li.style.padding = '10px';
+                li.style.marginBottom = '5px';
+            
+      li.append(`${message.username}: ${message.message}`);
+    }
+    ul.append(li);
+   
+  });
+  chatcontainer.scrollTop = chatcontainer.scrollHeight;
+};
 
 
      const postMessage = async () => {
@@ -110,6 +192,9 @@ setTheme(theme);
       ul.innerHTML = "";
       getMessages();
     };
+
+
+    
 
 
     b.addEventListener('click', postMessage);
