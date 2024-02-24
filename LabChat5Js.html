@@ -58,9 +58,19 @@
     t.style.fontFamily = '"Segoe UI", sans-serif'; 
     t.style.fontSize = '1rem'; 
     t.setAttribute('maxlength', '140');
-
-
     inputcontainer.append(t);
+    t.addEventListener('keydown', function(event) {
+    // Comprobar si la tecla presionada es Enter
+    if (event.key === 'Enter') {
+      event.preventDefault(); 
+      postMessage(); 
+      t.value = '';
+     }
+    });
+
+
+
+
     const b = document.createElement('button');
     b.textContent = 'Enviar';
     b.style.margin = "0"; 
@@ -193,12 +203,14 @@ if (message.username === 'Dubon') {
         body: JSON.stringify(body)
       });
       ul.innerHTML = "";
+      t.value = ''; 
       getMessages();
+      
     };
 
 
     
-
+    setInterval(getMessages, 5000);
 
     b.addEventListener('click', postMessage);
     
